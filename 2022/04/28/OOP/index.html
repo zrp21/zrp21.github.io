@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zrp21.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="一份简要的makefile编写介绍，包括引论和规则，适用于初学者">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Makefile basic">
+<meta property="og:url" content="https://zrp21.github.io/2022/04/28/OOP/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一份简要的makefile编写介绍，包括引论和规则，适用于初学者">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-04-27T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-28T10:55:20.595Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="code">
+<meta property="article:tag" content="oop">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://zrp21.github.io/2022/04/28/OOP/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://zrp21.github.io/2022/04/28/OOP/","path":"2022/04/28/OOP/","title":"Makefile basic"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Makefile basic | Hexo</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Makefile-%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0"><span class="nav-number">1.</span> <span class="nav-text">Makefile 自学笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%AE%BA"><span class="nav-number">1.2.</span> <span class="nav-text">引论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%84%E5%88%99"><span class="nav-number">1.3.</span> <span class="nav-text">规则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%BB%84%E6%88%90"><span class="nav-number">1.3.1.</span> <span class="nav-text">基本组成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Makefile%E7%AE%80%E5%8D%95%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.3.2.</span> <span class="nav-text">Makefile简单示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#make%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B%E7%AE%80%E8%BF%B0"><span class="nav-number">1.3.3.</span> <span class="nav-text">make执行过程简述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F"><span class="nav-number">1.3.4.</span> <span class="nav-text">变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%90%E5%BC%8F%E8%A7%84%E5%88%99"><span class="nav-number">1.3.5.</span> <span class="nav-text">隐式规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%A6%E4%B8%80%E7%A7%8D%E9%A3%8E%E6%A0%BC%E7%9A%84%E9%9A%90%E5%BC%8F%E8%A7%84%E5%88%99"><span class="nav-number">1.3.6.</span> <span class="nav-text">另一种风格的隐式规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%AA%E6%8C%87%E4%BB%A4"><span class="nav-number">1.3.7.</span> <span class="nav-text">伪指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E8%AE%B0%E5%8F%B7"><span class="nav-number">1.3.8.</span> <span class="nav-text">常见记号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E9%85%8D%E7%AC%A6"><span class="nav-number">1.3.9.</span> <span class="nav-text">通配符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%98%9F%E5%8F%B7"><span class="nav-number">1.3.9.1.</span> <span class="nav-text">* 星号</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zrp21.github.io/2022/04/28/OOP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Makefile basic | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Makefile basic
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-04-28 00:00:00 / Modified: 18:55:20" itemprop="dateCreated datePublished" datetime="2022-04-28T00:00:00+08:00">2022-04-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Diary/" itemprop="url" rel="index"><span itemprop="name">Diary</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>一份简要的makefile编写介绍，包括引论和规则，适用于初学者</p>
+<span id="more"></span>
+<h1 id="Makefile-自学笔记"><a href="#Makefile-自学笔记" class="headerlink" title="Makefile 自学笔记"></a>Makefile 自学笔记</h1><p>[TOC]</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>内容来自于 <a target="_blank" rel="noopener" href="https://www.gnu.org/software/make/manual/html_node/index.html">https://www.gnu.org/software/make/manual/html_node/index.html</a><br>网站是全英文的，这里做了翻译和精简。</p>
+<p>以下展示的仅仅是<code>makefile</code>的基础功能，更多内容详见上网站</p>
+<h2 id="引论"><a href="#引论" class="headerlink" title="引论"></a>引论</h2><p><code>makefile </code> 指导 <code>make</code> 如何链接程序，可以理解为<code>makefile</code>类似于<code>.cpp</code>文件，<code>make</code>类似于<code>.exe</code>文件</p>
+<h2 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h2><h3 id="基本组成"><a href="#基本组成" class="headerlink" title="基本组成"></a>基本组成</h3><p>一个简单的<code>makefile</code>规则可以表现为如下：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">target … : prerequisites …</span><br><span class="line">        recipe</span><br><span class="line">        …</span><br><span class="line">        …</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>目标文件（<code>target</code>）：产生的文件的名字，一般来说是<code>.o</code>文件，或是一个行动的名字，例如<code>clean</code></li>
+<li>依赖文件（<code>prerequisite</code>）：产生目标文件所需要的文件，一般来说会有多个</li>
+<li>编译规则（<code>recipe</code>）：可以理解为具体输入命令行的命令内容，一般来说会有多行，并且通常要用到依赖文件。<strong>注意格式：</strong>每行需<code>tab</code>缩进。</li>
+</ul>
+<h3 id="Makefile简单示例"><a href="#Makefile简单示例" class="headerlink" title="Makefile简单示例"></a>Makefile简单示例</h3><p>需要编译一个<code>main.cpp</code>文件，其中函数声明在<code>fun.h</code>中，实现在<code>fun.cpp</code>中，对应的<code>makefile</code>如下：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">main: main.o employee.o                 #倚赖文件为main.o和employee.o目标文件为main.exe</span></span><br><span class="line">    g++ main.o employee.o -o main       <span class="comment">#千万注意前面的TAB不能漏掉</span></span><br><span class="line">										<span class="comment">#这句话的含义是用g++将main.o和employee.o生成链接，										    #-o main只的是命名exe文件，也可以省略</span></span><br><span class="line"><span class="section">main.o: main.cpp employee.h				#倚赖文件为main.cpp和employee.h目标文件为main.o</span></span><br><span class="line">    g++ -c main.cpp						<span class="comment">#g++ -c表示只编译不连接，后面只需要写.cpp即可</span></span><br><span class="line"></span><br><span class="line"><span class="section">employee.o: employee.cpp employee.h		#生成另一个对象employee.o</span></span><br><span class="line">    g++ -c employee.cpp</span><br><span class="line"></span><br><span class="line"><span class="section">clean:									#定义clean规则，</span></span><br><span class="line">    rm -f *.o							<span class="comment">#目前还没搞清楚-f的含义，但似乎rm -rf或rm也可以</span></span><br></pre></td></tr></table></figure>
+
+<p>在使用时，只需要进入该目录下，输入<code>make</code>即可开始编译，如果需要删掉所有<code>.o</code>文件，只需输入<code>make clean</code></p>
+<h3 id="make执行过程简述"><a href="#make执行过程简述" class="headerlink" title="make执行过程简述"></a>make执行过程简述</h3><p><code>make</code>在执行<code>makefile</code>的命令时，按顺序执行一个个规则，如果依赖文件不存在或时间要比现有的更新，则重新执行编译该依赖文件的过程，其实就相当于是只处理了改动的内容。</p>
+<p><strong>注意：</strong>make不会自动执行无依赖文件的指令（如<code>clean</code>）</p>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>变量的定义可以近似理解为<code>c++</code>中的<code>#define</code>，使用方法为：</p>
+<ul>
+<li>变量的定义：<code>objects =...</code></li>
+<li>变量的使用：<code>$(objects)</code></li>
+</ul>
+<p>示例代码：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">objects = main.o kbd.o command.o display.o \</span><br><span class="line">          insert.o search.o files.o utils.o</span><br><span class="line"></span><br><span class="line">edit : <span class="variable">$(objects)</span></span><br><span class="line">        cc -o edit <span class="variable">$(objects)</span></span><br><span class="line">main.o : main.c defs.h</span><br><span class="line">        cc -c main.c</span><br><span class="line">kbd.o : kbd.c defs.h command.h</span><br><span class="line">        cc -c kbd.c</span><br><span class="line">command.o : command.c defs.h command.h</span><br><span class="line">        cc -c command.c</span><br><span class="line">display.o : display.c defs.h buffer.h</span><br><span class="line">        cc -c display.c</span><br><span class="line">insert.o : insert.c defs.h buffer.h</span><br><span class="line">        cc -c insert.c</span><br><span class="line">search.o : search.c defs.h buffer.h</span><br><span class="line">        cc -c search.c</span><br><span class="line">files.o : files.c defs.h buffer.h command.h</span><br><span class="line">        cc -c files.c</span><br><span class="line">utils.o : utils.c defs.h</span><br><span class="line">        cc -c utils.c</span><br><span class="line">clean :</span><br><span class="line">        rm edit <span class="variable">$(objects)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="隐式规则"><a href="#隐式规则" class="headerlink" title="隐式规则"></a>隐式规则</h3><p>隐式规则的出现可以简化<code>makefile</code>的编写过程，它可以自动补齐人们约定俗成省略的内容。具体来讲，在生成每个<code>.o</code>文件时，只需省略掉源文件和命令，而只需要声明头文件即可，<code>make</code>在执行时会自动寻找与<code>.o</code>文件同名的源文件去编译，代码示例如下：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">objects = main.o kbd.o command.o display.o \</span><br><span class="line">          insert.o search.o files.o utils.o</span><br><span class="line"></span><br><span class="line">edit : <span class="variable">$(objects)</span></span><br><span class="line">        cc -o edit <span class="variable">$(objects)</span></span><br><span class="line"></span><br><span class="line">main.o : defs.h						<span class="comment">#这里简化了main.o : main.c defs.h cc -c main.c的书写</span></span><br><span class="line">kbd.o : defs.h command.h</span><br><span class="line">command.o : defs.h command.h</span><br><span class="line">display.o : defs.h buffer.h</span><br><span class="line">insert.o : defs.h buffer.h</span><br><span class="line">search.o : defs.h buffer.h</span><br><span class="line">files.o : defs.h buffer.h command.h</span><br><span class="line">utils.o : defs.h</span><br><span class="line"></span><br><span class="line">.PHONY : clean</span><br><span class="line">clean :</span><br><span class="line">        rm edit <span class="variable">$(objects)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="另一种风格的隐式规则"><a href="#另一种风格的隐式规则" class="headerlink" title="另一种风格的隐式规则"></a>另一种风格的隐式规则</h3><p>当生成文件对象仅由隐式规则创建时，可以使用另一种<code>makefile</code>的书写方式。其本质是改变了分组方式，使原来的按照目标文件分组变为按依赖文件分组，示例代码如下：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">objects = main.o kbd.o command.o display.o \</span><br><span class="line">          insert.o search.o files.o utils.o</span><br><span class="line"></span><br><span class="line">edit : <span class="variable">$(objects)</span></span><br><span class="line">        cc -o edit <span class="variable">$(objects)</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$(objects)</span> : defs.h					<span class="comment">#所有objects中的目标文件均依赖于def.h</span></span><br><span class="line">kbd.o command.o files.o : command.h			<span class="comment">#为其中三个文件增添依赖文件command.h</span></span><br><span class="line">display.o insert.o search.o files.o : buffer.h		<span class="comment">#再为另外四个文件增添buffer.h</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="伪指令"><a href="#伪指令" class="headerlink" title="伪指令"></a>伪指令</h3><p>伪指令是无依赖文件的一系列指令的总称，其中常用代表的如<code>clean</code>，它们在执行<code>make</code>的时候不会被自动执行，只有在用户给出<code>make 指令名称</code>时才会被使用，伪指令在编写时需要注意两点：1.伪指令不要写在开头，以防make在执行过程中产生歧义。2.以防产生歧义，伪指令的名称最好被提前声明。比如一个安全的<code>clean</code>指令可以写作：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.PHONY : clean</span><br><span class="line">clean :</span><br><span class="line">        -rm edit <span class="variable">$(objects)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="常见记号"><a href="#常见记号" class="headerlink" title="常见记号"></a>常见记号</h3><ul>
+<li>$@：所有目标文件</li>
+<li>$^：目标依赖的所有文件</li>
+<li>$&lt;：第一个依赖文件</li>
+<li>$?：所有更新过的依赖文件</li>
+</ul>
+<h3 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h3><h4 id="星号"><a href="#星号" class="headerlink" title="* 星号"></a>* 星号</h4><ul>
+<li>用在规则的目标和依赖中：make在读取Makefile时会自动对其进行匹配处理（通配符展开）。如：</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">test: *.o</span></span><br><span class="line">    gcc -o <span class="variable">$@</span> <span class="variable">$^</span></span><br><span class="line"><span class="section">*.o: *.c</span></span><br><span class="line">    gcc -c <span class="variable">$^</span></span><br></pre></td></tr></table></figure>
+
+<p>本代码中通配符的含义是该目录下的所有以.o后缀结尾的文件和.c文件，实际上的效果是将所有.c文件都用gcc编译了一遍（但还没有生成链接）</p>
+<ul>
+<li>用在规则的命令中：通配符的通配处理在shell执行命令时完成。如：</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">clean:</span></span><br><span class="line">    rm -f *.o</span><br></pre></td></tr></table></figure>
+
+<p>起到了删除所有目录下.o文件的效果</p>
+<ul>
+<li>除了以上两种情况，在其他地方都不能直接使用通配符。需要一些函数（如wildcard）来实现。如果想列举当前目录下的所有C文件，可以直接使用wildcard函数</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">wildcard</span> *.c)</span></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/code/" rel="tag"># code</a>
+              <a href="/tags/oop/" rel="tag"># oop</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/17/hello-world/" rel="prev" title="Hello World">
+                  <i class="fa fa-chevron-left"></i> Hello World
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/28/My-New-Post/" rel="next" title="My New Post">
+                  My New Post <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
